@@ -91,16 +91,43 @@ h1 em{font-style:italic;color:var(--t3)}
    Wise pattern — pre-computed on load, no empty state, no submit. ---- */
 .calc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:hidden}
 .calc-head{padding:16px 24px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--bg3)}
-.calc-body{padding:24px}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px}
-.input-w{position:relative;display:flex;align-items:center}
-.input-w .pre{position:absolute;left:14px;font-family:var(--mono);font-size:15px;color:var(--t3-text);pointer-events:none}
-.field input{width:100%;height:52px;font-family:var(--mono);font-size:17px;font-weight:500;color:var(--t1);background:var(--bg);border:1px solid var(--bd2);border-radius:var(--radius);padding:0 14px;transition:border-color .12s ease,box-shadow .12s ease}
-.field input.money{padding-left:30px}
-.field input:focus{outline:none;border-color:var(--b);box-shadow:0 0 0 3px var(--b-bg2)}
-.field .hint{font-size:11px;color:var(--t3-text);margin-top:5px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-body{padding:20px 24px 22px}
+
+/* ---- slider-led fields. The inputs here are all estimates — nobody knows
+   their annual spend to the dollar — so a slider is the honest affordance:
+   it says "drag me" where an empty box says "go find your statement".
+   The number stays typeable and bound both ways for anyone who does know. ---- */
+.f{margin-bottom:15px}
+.f:last-child{margin-bottom:0}
+.f-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:7px}
+.f-top label{font-size:13px;font-weight:500;color:var(--t2)}
+.f-val{display:flex;align-items:baseline;font-family:var(--mono);font-size:16px;font-weight:600;color:var(--t1)}
+.f-val .pre{color:var(--t3-text);margin-right:1px}
+.f-val input{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--t1);background:none;border:none;border-bottom:1px dashed var(--bd2);text-align:right;padding:0 0 1px;width:5.2ch;transition:border-color .12s ease}
+.f-val input.w-lg{width:9.2ch}   /* fits "3,000,000" without clipping */
+.f-val input:hover{border-bottom-color:var(--t3)}
+.f-val input:focus{outline:none;border-bottom:1px solid var(--b);color:var(--b-text)}
+
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--bg4);border-radius:999px;outline:none;margin:0;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--t1);border:2px solid var(--bg2);box-shadow:var(--shadow-sm);cursor:grab}
+input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.1)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--t1);border:2px solid var(--bg2);box-shadow:var(--shadow-sm);cursor:grab}
+input[type=range]:focus-visible{box-shadow:0 0 0 3px var(--b-bg2)}
+.f-hint{font-size:11px;color:var(--t3-text);margin-top:5px}
+
+/* ---- trajectory: the pot compounding to the target.
+   Semantic per design.md — green is the gain, blue is the benchmark line.
+   No text inside the viewBox, so the SVG text-scaling trap does not apply. ---- */
+.traj{padding:2px 24px 0;background:var(--bg2)}
+.traj svg{display:block;width:100%;height:82px}
+.traj-x{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--t3-text);margin-top:2px}
+
+/* ---- progress: how far along you already are. Green = gain, per the system. ---- */
+.prog{padding:0 24px 18px;background:var(--bg2)}
+.prog-t{height:6px;background:var(--bg4);border-radius:999px;overflow:hidden}
+.prog-f{height:100%;background:var(--g);border-radius:999px;width:0;transition:width .25s cubic-bezier(.4,0,.2,1)}
+.prog-l{display:flex;justify-content:space-between;align-items:baseline;margin-top:7px;font-size:11px;color:var(--t3-text)}
+.prog-l b{font-family:var(--mono);font-size:12px;color:var(--g-text)}
 
 .out{background:var(--t1);color:#fff;padding:22px 24px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .out-l{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#b0b0a8}
@@ -214,7 +241,6 @@ section{padding:var(--sec-pad) 0}
   :root{--sec-pad:56px;--body:16px;--lede:17px}
   .wrap,.nav-in{padding:0 18px}
   .tools{grid-template-columns:1fr}
-  .row2{grid-template-columns:1fr}
   .out-v{font-size:38px}
   .news{padding:26px}
   .news-form{flex-direction:column}
@@ -224,6 +250,10 @@ section{padding:var(--sec-pad) 0}
 @media(pointer:coarse){
   .btn.sm{height:44px}
   .aff-tbl .btn{height:44px}
+  /* a thumb you can actually catch with a thumb; taller hit-area on the track */
+  input[type=range]{height:6px;padding:14px 0;background-clip:content-box}
+  input[type=range]::-webkit-slider-thumb{width:26px;height:26px}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px}
 }
 /* the top tier ships no entrance motion on hero type; honour the preference anyway */
 @media(prefers-reduced-motion:reduce){
@@ -271,32 +301,49 @@ section{padding:var(--sec-pad) 0}
         <span class="lbl" style="color:var(--b-text)">Live →</span>
       </div>
       <div class="calc-body">
-        <div class="row2">
-          <div class="field">
+        <div class="f">
+          <div class="f-top">
             <label for="age">Your age today</label>
-            <input type="number" id="age" value="42" min="18" max="70" inputmode="numeric">
+            <div class="f-val"><input type="text" id="age" value="42" inputmode="numeric"></div>
           </div>
-          <div class="field">
-            <label for="spend">Annual spending</label>
-            <div class="input-w"><span class="pre">S$</span>
-              <input type="text" class="money" id="spend" value="90,000" inputmode="numeric">
-            </div>
-          </div>
+          <input type="range" id="age-r" min="25" max="65" step="1" value="42" aria-label="Your age today">
         </div>
-        <div class="field">
-          <label for="pot">Invested today</label>
-          <div class="input-w"><span class="pre">S$</span>
-            <input type="text" class="money" id="pot" value="480,000" inputmode="numeric">
+        <div class="f">
+          <div class="f-top">
+            <label for="spend">You spend a year</label>
+            <div class="f-val"><span class="pre">S$</span><input type="text" class="money w-lg" id="spend" value="90,000" inputmode="numeric"></div>
           </div>
-          <div class="hint">Everything working for you — CPF OA/SA, SRS, brokerage. Not your home.</div>
+          <input type="range" id="spend-r" min="24000" max="300000" step="1000" value="90000" aria-label="Annual spending">
+          <div class="f-hint">Roughly. Take your monthly and multiply by twelve — it does not need to be exact.</div>
         </div>
-        <div class="field" style="margin-bottom:0">
-          <label for="save">Saving each month</label>
-          <div class="input-w"><span class="pre">S$</span>
-            <input type="text" class="money" id="save" value="6,500" inputmode="numeric">
+        <div class="f">
+          <div class="f-top">
+            <label for="pot">Invested today</label>
+            <div class="f-val"><span class="pre">S$</span><input type="text" class="money w-lg" id="pot" value="480,000" inputmode="numeric"></div>
           </div>
+          <input type="range" id="pot-r" min="0" max="3000000" step="10000" value="480000" aria-label="Invested today">
+          <div class="f-hint">Everything working for you — CPF OA/SA, SRS, brokerage. Not your home.</div>
+        </div>
+        <div class="f">
+          <div class="f-top">
+            <label for="save">Saving each month</label>
+            <div class="f-val"><span class="pre">S$</span><input type="text" class="money w-lg" id="save" value="6,500" inputmode="numeric"></div>
+          </div>
+          <input type="range" id="save-r" min="0" max="20000" step="100" value="6500" aria-label="Saving each month">
         </div>
       </div>
+
+      <!-- trajectory. Green = the pot (gain), blue dashed = the target (benchmark). -->
+      <div class="traj">
+        <svg id="traj" viewBox="0 0 600 82" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="traj-x"><span>today</span><span id="traj-end">—</span></div>
+      </div>
+
+      <div class="prog">
+        <div class="prog-t"><div class="prog-f" id="prog"></div></div>
+        <div class="prog-l"><span id="prog-l">—</span><span>target <b id="prog-tgt">—</b></span></div>
+      </div>
+
       <div class="out">
         <div>
           <div class="out-l">You reach enough at</div>
@@ -502,42 +549,105 @@ function monthsToTarget(pot, monthlySave, target){
   return Infinity;
 }
 
+/* Balance path, sampled. Same recurrence as monthsToTarget so the picture
+   cannot disagree with the number above it. */
+function balanceAt(pot, pmt, months){
+  const i = Math.pow(1 + REAL_RETURN, 1/12) - 1;
+  const g = Math.pow(1 + i, months);
+  return pot * g + pmt * ((g - 1) / i);
+}
+
+/* preserveAspectRatio="none" stretches x, so strokes carry
+   vector-effect:non-scaling-stroke. No text inside the viewBox, which is why
+   the design.md SVG text-scaling trap does not bite here. */
+function drawTraj(pot, save, target, n){
+  const W = 600, H = 82, pad = 7;
+  const span = isFinite(n) && n > 0 ? n : 720;
+  const yMax = Math.max(target * 1.10, balanceAt(pot, save, span) * 1.02, 1);
+  const X = m => (m / span) * W;
+  const Y = v => H - pad - (v / yMax) * (H - pad * 2);
+
+  let pts = [];
+  for (let s = 0; s <= 60; s++){
+    const m = (s / 60) * span;
+    pts.push([X(m), Y(balanceAt(pot, save, m))]);
+  }
+  const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const area = 'M' + pts[0][0].toFixed(1) + ',' + H + ' ' + line.slice(1) + ' L' + W + ',' + H + ' Z';
+  const ty = Y(target);
+
+  /* var() in an SVG presentation attribute is patchily supported; in a style
+     attribute it is not. Use style. */
+  $('traj').innerHTML =
+      '<path d="' + area + '" style="fill:var(--g-bg2)"/>'
+    + '<path d="' + line + '" style="fill:none;stroke:var(--g);stroke-width:2" vector-effect="non-scaling-stroke"/>'
+    + '<line x1="0" y1="' + ty.toFixed(1) + '" x2="' + W + '" y2="' + ty.toFixed(1)
+    + '" style="stroke:var(--b);stroke-width:1;stroke-dasharray:4 4" vector-effect="non-scaling-stroke"/>';
+}
+
 function update(){
-  const age    = Math.min(Math.max(parseInt($('age').value, 10) || 0, 18), 70);
+  const age    = Math.min(Math.max(parseInt(numOf($('age')), 10) || 0, 18), 75);
   const spend  = numOf($('spend'));
   const pot    = numOf($('pot'));
   const save   = numOf($('save'));
   const target = spend * (1 / WITHDRAWAL);
 
   $('out-num').textContent = spend ? 'S$' + fmt(target) : '—';
+  $('prog-tgt').textContent = spend ? 'S$' + fmt(target) : '—';
 
   if (!spend){
     $('out-age').textContent = '—';
-    $('out-sub').textContent = 'Enter your annual spending to see the number.';
+    $('out-sub').textContent = 'Set your annual spending to see the number.';
+    $('prog').style.width = '0%'; $('prog-l').textContent = '—';
+    $('traj').innerHTML = ''; $('traj-end').textContent = '—';
     return;
   }
+
+  const pct = Math.min(pot / target * 100, 100);
+  $('prog').style.width = pct.toFixed(1) + '%';
+  $('prog-l').innerHTML = '<b>' + pct.toFixed(0) + '%</b> of the way there today';
+
   const n = monthsToTarget(pot, save, target);
+  drawTraj(pot, save, target, n);
+
   if (n === 0){
     $('out-age').textContent = 'Now';
-    $('out-sub').textContent = 'You are already at 25x your spending. The question is no longer money.';
+    $('out-sub').textContent = 'You are already at 25× your spending. The question stopped being money a while ago.';
+    $('traj-end').textContent = 'today';
     return;
   }
   if (!isFinite(n)){
     $('out-age').textContent = 'Not yet';
-    $('out-sub').textContent = 'On these inputs the pot does not reach S$' + fmt(target) + ' within 60 years. Change one of them.';
+    $('out-sub').textContent = 'On these numbers the pot does not reach S$' + fmt(target) + ' within 60 years. Move one of the sliders.';
+    $('traj-end').textContent = '60y';
     return;
   }
   const yrs = n / 12;
-  const stopAge = age + yrs;
-  $('out-age').textContent = Math.floor(stopAge);
-  $('out-sub').textContent = fmt(Math.floor(yrs)) + 'y ' + Math.round((yrs % 1) * 12) + 'm away · you need S$' + fmt(target)
-    + ' · that is ' + (pot / target * 100).toFixed(0) + '% of the way there today.';
+  $('out-age').textContent = Math.floor(age + yrs);
+  $('out-sub').textContent = Math.floor(yrs) + 'y ' + Math.round((yrs % 1) * 12) + 'm away · you need S$' + fmt(target);
+  $('traj-end').textContent = 'age ' + Math.floor(age + yrs);
 }
 
-['age','spend','pot','save'].forEach(id => {
-  const el = $(id);
-  el.addEventListener('input', update);
-  if (el.classList.contains('money')) el.addEventListener('blur', () => { groupMoney(el); update(); });
+/* Two-way binding. Drag to explore, type when you actually know the figure.
+   Dragging is the point: it turns one answer into a relationship — add
+   S$2,000/month and watch 55 become 51. */
+[['age','age-r'],['spend','spend-r'],['pot','pot-r'],['save','save-r']].forEach(([tid, rid]) => {
+  const txt = $(tid), rng = $(rid);
+  rng.addEventListener('input', () => {
+    const v = +rng.value;
+    txt.value = v >= 1000 ? fmt(v) : String(v);   // house rule: group every figure >= 1,000
+    update();
+  });
+  txt.addEventListener('input', () => {
+    const v = numOf(txt);
+    if (v >= +rng.min && v <= +rng.max) rng.value = v;   // out-of-range typing still computes, slider just pins
+    update();
+  });
+  txt.addEventListener('blur', () => {
+    const v = numOf(txt);
+    txt.value = v >= 1000 ? fmt(v) : String(v);
+    update();
+  });
 });
 
 update();   // pre-computed on first paint — the answer exists before any interaction
