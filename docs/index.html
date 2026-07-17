@@ -193,16 +193,6 @@ section{padding:var(--sec-pad) 0}
 .spon-in h4{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.2;letter-spacing:-0.3px}
 .spon-in p{font-size:15px;color:var(--t2);margin-top:8px;max-width:56ch}
 
-/* ---- affiliate table ---- */
-.aff-tbl{width:100%;border-collapse:collapse;margin-top:8px}
-.aff-tbl th{font-family:var(--sans);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3-text);text-align:left;padding:0 16px 12px 0;border-bottom:2px solid var(--t1)}
-.aff-tbl th:last-child,.aff-tbl td:last-child{text-align:right;padding-right:0}
-.aff-tbl td{padding:20px 16px 20px 0;border-bottom:1px solid var(--bd);vertical-align:middle}
-.aff-tbl tr:hover td{background:var(--bg-hover)}
-.aff-n{font-size:16px;font-weight:600}
-.aff-d{font-size:13px;color:var(--t2);margin-top:2px}
-.aff-note{font-size:13px;color:var(--t2);margin-top:20px;max-width:var(--measure)}
-
 /* ---- newsletter ---- */
 .news{background:var(--t1);color:#fff;border-radius:var(--radius-lg);padding:56px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
 .news h2{font-family:var(--serif);font-weight:400;font-size:40px;line-height:1.1;letter-spacing:-0.5px}
@@ -244,12 +234,10 @@ section{padding:var(--sec-pad) 0}
   .out-v{font-size:38px}
   .news{padding:26px}
   .news-form{flex-direction:column}
-  .aff-tbl th:nth-child(2),.aff-tbl td:nth-child(2){display:none}
 }
 /* touch: 44px minimum tap target per design.md */
 @media(pointer:coarse){
   .btn.sm{height:44px}
-  .aff-tbl .btn{height:44px}
   /* a thumb you can actually catch with a thumb; taller hit-area on the track */
   input[type=range]{height:6px;padding:14px 0;background-clip:content-box}
   input[type=range]::-webkit-slider-thumb{width:26px;height:26px}
@@ -270,7 +258,6 @@ section{padding:var(--sec-pad) 0}
     <div class="nav-links">
       <a href="#tools">Tools</a>
       <a href="#reading">Reading</a>
-      <a href="#brokers">Brokers</a>
       <a href="#">Value living</a>
       <a href="#">About</a>
     </div>
@@ -456,41 +443,6 @@ section{padding:var(--sec-pad) 0}
   </div>
 </section>
 
-<!-- ============ brokers / affiliate ============ -->
-<section id="brokers">
-  <div class="wrap">
-    <div class="sec-h">
-      <span class="lbl">Comparison · contains affiliate links</span>
-      <h2>Brokers, ranked on published fees.</h2>
-      <p>Not on what they pay us. The ranking rule is fixed before any commercial conversation, and the methodology is linked below.</p>
-    </div>
-    <table class="aff-tbl">
-      <thead><tr><th>Broker</th><th>Best for</th><th>SGX / US fee</th><th></th></tr></thead>
-      <tbody>
-        <tr>
-          <td><div class="aff-n">Broker A</div><div class="aff-d">Lowest all-in for SGX, US and LSE</div></td>
-          <td style="font-size:14px;color:var(--t2)">Multi-market investors</td>
-          <td class="num" style="font-size:14px">0.08% / US$1.00</td>
-          <td><button class="btn ghost sm">Compare</button></td>
-        </tr>
-        <tr>
-          <td><div class="aff-n">Broker B</div><div class="aff-d">Free US stock trades, conditions apply</div></td>
-          <td style="font-size:14px;color:var(--t2)">US-only, smaller sums</td>
-          <td class="num" style="font-size:14px">0.08% / US$0.00</td>
-          <td><button class="btn ghost sm">Compare</button></td>
-        </tr>
-        <tr>
-          <td><div class="aff-n">Broker C</div><div class="aff-d">Widest access, CPF and SRS supported</div></td>
-          <td style="font-size:14px;color:var(--t2)">CPF/SRS investing</td>
-          <td class="num" style="font-size:14px">0.12% / US$2.50</td>
-          <td><button class="btn ghost sm">Compare</button></td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="aff-note">Fees shown are illustrative placeholders in this mockup. <a href="#" style="color:var(--b-text);text-decoration:underline">Full comparison and methodology →</a></p>
-  </div>
-</section>
-
 <!-- ============ newsletter ============ -->
 <section style="padding-top:0">
   <div class="wrap">
@@ -510,7 +462,7 @@ section{padding:var(--sec-pad) 0}
 <!-- ============ disclosure + footer ============ -->
 <div class="wrap">
   <div class="disc">
-    <b>Disclosure.</b> Some links here are affiliate links and we may earn a commission at no additional cost to you. Partner content is labelled and written by the sponsor. Neither affects how anything is ranked or reviewed. All of it is general information and education only — it is not financial advice and takes no account of your objectives, situation or needs. <a href="#" style="color:var(--b-text);text-decoration:underline">Full editorial policy →</a>
+    <b>Disclosure.</b> Where you see a partner placement it is labelled, and written by the sponsor rather than by us. It does not change what we cover. Everything here is general information and education only — it is not financial advice, and it takes no account of your objectives, situation or needs. <a href="#" style="color:var(--b-text);text-decoration:underline">Full editorial policy →</a>
   </div>
   <div class="foot">
     <b>Concept mockup.</b> Every figure, rating, headline, date and sponsor on this page is illustrative placeholder content, not a claim — none has been sourced or verified. Brokers are deliberately generic. The landing scale (96px sections, 66px display, 17px body) is measured from Linear, Stripe, Ramp, Mercury and the FT. Domain and TLD are not yet registered.

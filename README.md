@@ -94,6 +94,6 @@ The maths: months until the pot reaches 25× annual spending, at a 4% real retur
 
 - TLD undecided; domain not secured; no IPOS search done.
 - Placeholder figures need sourcing before any of this is shown to a third party as fact.
-- The broker comparison section is unresolved and may not survive. Do not build on it.
+- The broker comparison section was removed (it ranked named financial products). Whether any non-ranking, factual comparison belongs here at all is deferred, not decided.
 
 *Last updated: 2026-07-17*
