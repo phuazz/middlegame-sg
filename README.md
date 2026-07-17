@@ -92,8 +92,8 @@ The maths: months until the pot reaches 25× annual spending, at a 4% real retur
 
 ## Open
 
-- Brand name undecided; domain not secured; no IPOS search done.
+- TLD undecided; domain not secured; no IPOS search done.
 - Placeholder figures need sourcing before any of this is shown to a third party as fact.
-- The regulatory question around the underlying concept is unresolved and out of scope for this repo.
+- The broker comparison section is unresolved and may not survive. Do not build on it.
 
 *Last updated: 2026-07-17*
