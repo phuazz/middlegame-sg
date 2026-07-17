@@ -46,12 +46,44 @@ Local dev: `npx serve .` from the project root, then open `template.html`.
 
 ## Design
 
-Styled per `C:\dev\design.md` — tokens and font link copied verbatim. The shell, masthead, tab, card and pill patterns are lifted from `money-snowball`, `sg-property-decision` and `etf-starter-sg` so those three tools drop in as sub-pages without restyling.
+Colour tokens and the font link are copied verbatim from `C:\dev\design.md`. Nothing in the palette is forked.
 
-Two deliberate calls worth knowing before editing:
+### The third scale
 
-- **Document type scale, not dashboard scale.** Body copy is 16px at 1.65 line-height per the split `design.md` draws between the two. Do not inherit the 13px dashboard sizes onto prose.
-- **No brand accent colour.** Green and red stay semantic across the vault, so the brand is carried by the serif masthead and the 2px rule. Blue is interactive, amber marks sponsorship, purple marks affiliate.
+`design.md` defines two type scales: **dashboard** (11px labels, 13px body, dense on purpose) and **document** (16px body, 1.65 line-height, read line by line). A landing page is neither. Its job is persuasion, and applying the dashboard scale to it — which the first version of this page did — produces something that looks like an internal tool rather than a destination.
+
+So this page introduces a third scale, declared in `:root` under a `LANDING` comment and **not yet codified in `design.md`**. It is not invented; it is measured from computed styles on Linear, Stripe, Ramp, Mercury, Wise, FT, NYT and the Economist in July 2026:
+
+| Value | Here | Measured source |
+|---|---|---|
+| Section padding | 96px (72 / 56 at breakpoints) | Linear 128, Stripe 96, Ramp 64 — dashboards use ~20 |
+| Display | `clamp(40px, 5.6vw, 66px)`, lh 1.02, weight 400 | Modal is 64px at lh 1.0, weight 300–510 |
+| Body | 17px | Consumer fintech 17–18; dev tools 15 |
+| Prose measure | 62ch | Linear measures ~66ch |
+| Lead : secondary | 40px : 20px = 2.0× | FT's exact broadsheet ratio |
+
+**If this concept proceeds, that block belongs in `design.md` as a landing scale before any second page is built.** Right now it is a justified one-off; a second page copying it would be a silent fork.
+
+### Rules that carried over from the research
+
+- **Editorial uses hairline rules, never cards.** FT, NYT and the Economist are unanimous, and the Economist explicitly ships `box-shadow: none`. Cards on an article list are the single strongest dashboard tell. Tools are a *product* surface, so cards are correct there — the split is deliberate.
+- **Hierarchy comes from demoting secondaries, not promoting the lead.** The lead inherits the default size; `.sec-item h4` is the rule that shrinks. This is FT's own mechanism and it is drift-proof — a new story defaults to prominent, so you never hunt for a missing modifier.
+- **Display type is never bold.** The measured range is weight 300–510. Bold display at 64px is the cheapest-looking thing you can do. Instrument Serif at 400 sits correctly in that band.
+- **Sponsored content is marked by typography and whitespace, not a coloured box.** A hairline sandwich, a sans label where editorial is serif, true small-caps (`text-transform:lowercase` + `font-variant:small-caps`), and the advertiser named before the headline. The first version used a tinted amber box; that is the cheap tell.
+- **No entrance motion on hero type.** Linear and Stripe both ship `animation-name: none` on the h1. `prefers-reduced-motion` is honoured anyway.
+- **No brand accent colour.** Green and red stay semantic across the vault. The brand is carried by the serif and the whitespace. Blue is interactive, amber is caution, purple marks affiliate.
+
+### The hero calculator
+
+The hero leads with a working calculator rather than a screenshot. This is the **Wise pattern** — and it is worth knowing that it is *not* category consensus. Of eight world-class sites surveyed, only Wise puts a live tool near the fold, and only on its dedicated converter page. The pattern applies when the tool *is* the product, which is the whole premise here.
+
+The mechanics that make it work, copied deliberately:
+
+- **Pre-computed on first paint.** There is no empty state and no Calculate button. The answer exists before the user does anything; their only job is to change a number they can already see.
+- **Money fields are `type="text"` + `inputmode="numeric"`**, regrouped on blur. Not a style choice — the HTML spec requires `type="number"` to hold a valid floating-point number, so a comma makes the value invalid and the browser silently discards it. Wise does exactly this, independently corroborating the `design.md` grouping rule.
+- **Every read goes through `numOf()`.** `+"90,000"` is `NaN`.
+
+The maths: months until the pot reaches 25× annual spending, at a 4% real return, solved by stepping rather than logs so the zero-payment and zero-rate cases stay sane. Verified against the closed-form future-value formula on both sides of the boundary (month 165 = S$2,242,288, below target; month 166 = S$2,256,129, at target). The 4% return and 4% withdrawal assumptions are stated on the page itself, because they are contestable and doing otherwise would be dishonest.
 
 ## Open
 
