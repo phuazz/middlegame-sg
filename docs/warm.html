@@ -150,18 +150,25 @@ input[type=range]:focus-visible{box-shadow:0 0 0 3px var(--b-bg2)}
 .traj svg{display:block;width:100%;height:72px}   /* viewBox stays 82; preserveAspectRatio=none scales it */
 .traj-x{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--t3-text);margin-top:2px}
 
-/* ---- progress: how far along you already are. Green = gain, per the system. ---- */
-.prog{padding:0 24px 18px;background:var(--bg2)}
-.prog-t{height:6px;background:var(--bg4);border-radius:999px;overflow:hidden}
-.prog-f{height:100%;background:var(--g);border-radius:999px;width:0;transition:width .25s cubic-bezier(.4,0,.2,1)}
-.prog-l{display:flex;justify-content:space-between;align-items:baseline;margin-top:7px;font-size:11px;color:var(--t3-text)}
-.prog-l b{font-family:var(--mono);font-size:12px;color:var(--g-text)}
-
-.out{background:var(--t1);color:#fff;padding:18px 24px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+/* ---- the result. "Enough" is a STACK (P5/BACKLOG 7): core essentials funded
+   at a cautious 3.25%, flexible lifestyle at 4.5%. The stack bar sits on a
+   light surface so both layers read — core is --b (brand green here), flex --a. ---- */
+.out{background:var(--t1);color:#fff;padding:16px 24px 18px;display:flex;flex-direction:column;gap:12px}
+.out-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .out-l{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#b0b0a8}
 .out-v{font-family:var(--serif);font-size:46px;line-height:1;letter-spacing:-1px}
-.out-s{font-family:var(--mono);font-size:12px;color:#b0b0a8;margin-top:8px;width:100%}
-.assump{padding:12px 24px;background:var(--bg3);border-top:1px solid var(--bd);font-size:11px;color:var(--t3-text);line-height:1.5}
+.out-s{font-family:var(--mono);font-size:12px;color:#b0b0a8;width:100%}
+.stack{padding:14px 24px 16px;background:var(--bg3);border-top:1px solid var(--bd)}
+.stack-bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--bg4)}
+.stack-bar>div{transition:width .25s cubic-bezier(.4,0,.2,1)}
+.stack-core{background:var(--b)}
+.stack-flex{background:var(--a)}
+.stack-l{display:flex;gap:16px;flex-wrap:wrap;margin-top:9px;font-size:11px;color:var(--t3-text)}
+.stack-l i{font-style:normal;display:inline-flex;align-items:center;gap:6px}
+.stack-l .dot{width:9px;height:9px;border-radius:2px;flex:none}
+.stack-l b{font-family:var(--mono);font-weight:600;color:var(--t2)}
+.stack-note{font-size:11px;color:var(--t3-text);line-height:1.5;margin-top:10px}
+.stack-note b{color:var(--t2)}
 
 /* ============================================================
    Social proof — flush under hero, never inside it. Ramp/Stripe/Mercury.
@@ -374,11 +381,19 @@ input[type=range]::-moz-range-thumb{background:var(--brand)}
         </div>
         <div class="f">
           <div class="f-top">
-            <label for="spend">You spend a year</label>
-            <div class="f-val"><span class="pre">S$</span><input type="text" class="money w-lg" id="spend" value="90,000" inputmode="numeric"></div>
+            <label for="ess">Essentials a year</label>
+            <div class="f-val"><span class="pre">S$</span><input type="text" class="money w-lg" id="ess" value="60,000" inputmode="numeric"></div>
           </div>
-          <input type="range" id="spend-r" min="24000" max="300000" step="1000" value="90000" aria-label="Annual spending">
-          <div class="f-hint">Roughly. Take your monthly and multiply by twelve — it does not need to be exact.</div>
+          <input type="range" id="ess-r" min="12000" max="200000" step="1000" value="60000" aria-label="Essential spending a year">
+          <div class="f-hint">Housing, food, healthcare, transport — the spending you cannot easily cut.</div>
+        </div>
+        <div class="f">
+          <div class="f-top">
+            <label for="life">Lifestyle a year</label>
+            <div class="f-val"><span class="pre">S$</span><input type="text" class="money w-lg" id="life" value="30,000" inputmode="numeric"></div>
+          </div>
+          <input type="range" id="life-r" min="0" max="150000" step="1000" value="30000" aria-label="Lifestyle spending a year">
+          <div class="f-hint">Travel, dining, fun — the spending you could trim in a lean year.</div>
         </div>
         <div class="f">
           <div class="f-top">
@@ -403,24 +418,26 @@ input[type=range]::-moz-range-thumb{background:var(--brand)}
         <div class="traj-x"><span>today</span><span id="traj-end">—</span></div>
       </div>
 
-      <div class="prog">
-        <div class="prog-t"><div class="prog-f" id="prog"></div></div>
-        <div class="prog-l"><span id="prog-l">—</span><span>target <b id="prog-tgt">—</b></span></div>
-      </div>
-
       <div class="out">
-        <div>
-          <div class="out-l">You reach enough at</div>
-          <div class="out-v" id="out-age">—</div>
-        </div>
-        <div style="text-align:right">
-          <div class="out-l">Your number</div>
-          <div class="out-v num" id="out-num" style="font-size:30px">—</div>
+        <div class="out-row">
+          <div>
+            <div class="out-l">You reach enough at</div>
+            <div class="out-v" id="out-age">—</div>
+          </div>
+          <div style="text-align:right">
+            <div class="out-l">Your number</div>
+            <div class="out-v num" id="out-num" style="font-size:30px">—</div>
+          </div>
         </div>
         <div class="out-s" id="out-sub">—</div>
       </div>
-      <div class="assump">
-        <b>Assumes</b> 4% real return after inflation and a 4% withdrawal rate (25× spending). Both are contestable — <a href="#" style="color:var(--b-text);text-decoration:underline">we show why we picked them</a>. Illustrative only.
+      <div class="stack">
+        <div class="stack-bar"><div class="stack-core" id="stk-core"></div><div class="stack-flex" id="stk-flex"></div></div>
+        <div class="stack-l">
+          <i><span class="dot" style="background:var(--b)"></span>Essentials <b id="stk-core-v">—</b> at 3.25%</i>
+          <i><span class="dot" style="background:var(--a)"></span>Lifestyle <b id="stk-flex-v">—</b> at 4.5%</i>
+        </div>
+        <div class="stack-note"><b>Enough is a stack, not one number.</b> Essentials get a cautious 3.25% withdrawal — about 31× a year of them — because they must last. Lifestyle runs at 4.5% — about 22× — because you can trim it in a lean year. <a href="#" style="color:var(--b-text);text-decoration:underline">Why these rates</a> · 4% real return assumed · illustrative only.</div>
       </div>
     </div>
   </div>
@@ -568,7 +585,11 @@ function numOf(el){ const n = parseFloat(String(el.value).replace(/[^\d.]/g,''))
 function groupMoney(el){ const n = numOf(el); el.value = n ? fmt(n) : '0'; }
 
 const REAL_RETURN = 0.04;   // real, after inflation
-const WITHDRAWAL  = 0.04;   // 4% rule -> 25x annual spending
+/* Layered withdrawal rates (P5/BACKLOG 7). Essentials must last, so they are
+   funded at a cautious rate; lifestyle can flex in a bad year, so it tolerates
+   a higher one. "Enough" is the two stacked, not a single 25x of total spend. */
+const SWR_CORE = 0.0325;    // essentials -> 1/0.0325 = 30.8x
+const SWR_FLEX = 0.045;     // lifestyle  -> 1/0.045  = 22.2x
 
 /* Months until the pot reaches 25x spending.
    FV(n) = P(1+i)^n + PMT * [((1+i)^n - 1) / i],  i = monthly real rate.
@@ -622,52 +643,58 @@ function drawTraj(pot, save, target, n){
 }
 
 function update(){
-  const age    = Math.min(Math.max(parseInt(numOf($('age')), 10) || 0, 18), 75);
-  const spend  = numOf($('spend'));
-  const pot    = numOf($('pot'));
-  const save   = numOf($('save'));
-  const target = spend * (1 / WITHDRAWAL);
+  const age  = Math.min(Math.max(parseInt(numOf($('age')), 10) || 0, 18), 75);
+  const ess  = numOf($('ess'));
+  const life = numOf($('life'));
+  const pot  = numOf($('pot'));
+  const save = numOf($('save'));
 
-  $('out-num').textContent = spend ? 'S$' + fmt(target) : '—';
-  $('prog-tgt').textContent = spend ? 'S$' + fmt(target) : '—';
+  // the stack: each layer funded at its own withdrawal rate, then added
+  const tCore  = ess  / SWR_CORE;
+  const tFlex  = life / SWR_FLEX;
+  const target = tCore + tFlex;
 
-  if (!spend){
+  $('out-num').textContent  = target ? 'S$' + fmt(target) : '—';
+  $('stk-core-v').textContent = 'S$' + fmt(tCore);
+  $('stk-flex-v').textContent = 'S$' + fmt(tFlex);
+  const corePct = target ? tCore / target * 100 : 0;
+  $('stk-core').style.width = corePct.toFixed(1) + '%';
+  $('stk-flex').style.width = (100 - corePct).toFixed(1) + '%';
+
+  if (!target){
     $('out-age').textContent = '—';
-    $('out-sub').textContent = 'Set your annual spending to see the number.';
-    $('prog').style.width = '0%'; $('prog-l').textContent = '—';
+    $('out-sub').textContent = 'Set your spending to see the number.';
     $('traj').innerHTML = ''; $('traj-end').textContent = '—';
     return;
   }
 
-  const pct = Math.min(pot / target * 100, 100);
-  $('prog').style.width = pct.toFixed(1) + '%';
-  $('prog-l').innerHTML = '<b>' + pct.toFixed(0) + '%</b> of the way there today';
-
+  const pctThere = Math.min(pot / target * 100, 100);
   const n = monthsToTarget(pot, save, target);
   drawTraj(pot, save, target, n);
 
   if (n === 0){
     $('out-age').textContent = 'Now';
-    $('out-sub').textContent = 'You are already at 25× your spending. The question stopped being money a while ago.';
+    $('out-sub').textContent = 'You are already past your number. The question stopped being money a while ago.';
     $('traj-end').textContent = 'today';
     return;
   }
   if (!isFinite(n)){
     $('out-age').textContent = 'Not yet';
-    $('out-sub').textContent = 'On these numbers the pot does not reach S$' + fmt(target) + ' within 60 years. Move one of the sliders.';
+    $('out-sub').textContent = 'On these numbers the pot does not reach S$' + fmt(target) + ' within 60 years. Move a slider.';
     $('traj-end').textContent = '60y';
     return;
   }
   const yrs = n / 12;
   $('out-age').textContent = Math.floor(age + yrs);
-  $('out-sub').textContent = Math.floor(yrs) + 'y ' + Math.round((yrs % 1) * 12) + 'm away · you need S$' + fmt(target);
+  $('out-sub').textContent = Math.floor(yrs) + 'y ' + Math.round((yrs % 1) * 12) + 'm away · '
+    + pctThere.toFixed(0) + '% of the way there today';
   $('traj-end').textContent = 'age ' + Math.floor(age + yrs);
 }
 
 /* Two-way binding. Drag to explore, type when you actually know the figure.
-   Dragging is the point: it turns one answer into a relationship — add
-   S$2,000/month and watch 55 become 51. */
-[['age','age-r'],['spend','spend-r'],['pot','pot-r'],['save','save-r']].forEach(([tid, rid]) => {
+   Dragging is the point: it turns one answer into a relationship — push
+   lifestyle up and watch the stack (and the age) move. */
+[['age','age-r'],['ess','ess-r'],['life','life-r'],['pot','pot-r'],['save','save-r']].forEach(([tid, rid]) => {
   const txt = $(tid), rng = $(rid);
   rng.addEventListener('input', () => {
     const v = +rng.value;
