@@ -64,6 +64,8 @@ input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--t1);border:2px solid var(--bg2);box-shadow:var(--shadow-sm);cursor:grab}
 input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--t1);border:2px solid var(--bg2)}
 .f-hint{font-size:12px;color:var(--t3-text);margin-top:6px}
+.fxline{margin-top:16px;padding-top:12px;border-top:1px solid var(--bd);font-size:12px;color:var(--t3-text)}
+.fxline b{font-family:var(--mono);color:var(--t2);font-weight:600}
 
 /* result */
 .out{background:var(--brand-deep);color:#fff;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
@@ -155,13 +157,8 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
         <div class="f-hint">Shares in US-incorporated companies, and funds domiciled in the US. Not sure? The mechanisms below explain how to tell.</div>
       </div>
 
-      <div class="f">
-        <div class="f-top">
-          <label for="fx">Exchange rate assumption</label>
-          <div class="f-val"><span class="pre">S$1 = US$</span><input type="text" class="w-sm" id="fx" value="0.75" inputmode="decimal"></div>
-        </div>
-        <input type="range" id="fx-r" min="0.60" max="0.90" step="0.005" value="0.75" aria-label="Exchange rate">
-        <div class="f-hint">Set it yourself — the tax is assessed in US dollars, so the rate moves the answer.</div>
+      <div class="fxline">
+        Converted at <b class="num" id="fx-disp">—</b> · <span id="fx-asof">—</span>
       </div>
     </div>
 
@@ -289,6 +286,23 @@ const BRACKETS=[[0,10000,0,.18],[10000,20000,1800,.20],[20000,40000,3800,.22],
 [500000,750000,155800,.37],[750000,1000000,248300,.39],[1000000,null,345800,.40]];
 const CREDIT=13000;   // Form 706-NA: maximum unified credit for a non-resident non-citizen
 
+/* ---------------------------------------------------------------
+   FX — a single stated constant, not a user input. The tax itself is
+   assessed in US dollars, so the rate only affects the S$ presentation;
+   making the reader tune it implied a precision that does not exist.
+
+   ⚠ REFRESH BEFORE ANY REAL PUBLICATION, and prefer the MAS series:
+   https://www.mas.gov.sg/statistics/exchange-rates  (MAS and the
+   data.gov.sg daily series were both unavailable on 2026-07-18 — the
+   data.gov.sg resource d_046ff8d521a218d9178178cfbfc45c2c is also
+   discontinued, ending 2015-10-19 — so a market aggregator was used
+   instead. That is acceptable for a mock and not for a published page.)
+   --------------------------------------------------------------- */
+const SGD_PER_USD = 1.2912;                       // exchangerate-api.com
+const FX_ASOF     = '19 July 2026';
+const FX_SOURCE   = 'exchangerate-api.com — refresh from MAS before publishing';
+const FX = 1 / SGD_PER_USD;                       // US$ per S$1 ≈ 0.7745
+
 const $=id=>document.getElementById(id);
 const fmt=n=>Math.round(n).toLocaleString('en-US');
 function numOf(el){const n=parseFloat(String(el.value).replace(/[^\d.]/g,''));return isFinite(n)?n:0}
@@ -301,7 +315,9 @@ function tentative(a){
 function estateTax(us){ return Math.max(0, tentative(us)-CREDIT); }
 
 function update(){
-  const pf=numOf($('pf')), sh=Math.min(Math.max(numOf($('sh')),0),100), fx=numOf($('fx'))||0.75;
+  const pf=numOf($('pf')), sh=Math.min(Math.max(numOf($('sh')),0),100), fx=FX;
+  $('fx-disp').textContent = 'S$1 = US$'+FX.toFixed(4);
+  $('fx-asof').textContent = 'rate as at '+FX_ASOF+' · '+FX_SOURCE;
   const exposedSgd = pf*sh/100;
   const exposedUsd = exposedSgd*fx;
   const taxUsd = estateTax(exposedUsd);
@@ -339,7 +355,7 @@ function update(){
 }
 
 /* Two-way binding, house numeral rules: grouped >= 1,000, so text inputs not number. */
-[['pf','pf-r',1],['sh','sh-r',0],['fx','fx-r',2]].forEach(([tid,rid,dp])=>{
+[['pf','pf-r',1],['sh','sh-r',0]].forEach(([tid,rid,dp])=>{
   const t=$(tid), r=$(rid);
   r.addEventListener('input',()=>{ const v=+r.value; t.value = dp===2?v.toFixed(2):(v>=1000?fmt(v):String(v)); update(); });
   t.addEventListener('input',()=>{ const v=numOf(t); if(v>=+r.min&&v<=+r.max) r.value=v; update(); });
