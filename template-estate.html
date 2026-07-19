@@ -249,15 +249,17 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
   <p style="font-size:13px;color:var(--t3-text)">Computed from the statutory schedule below, less the US$13,000 credit. Assumes no deductions and no treaty relief. Your row is highlighted.</p>
 
   <div class="handoff">
-    <h3 style="margin-top:0">See how the alternatives actually compare</h3>
-    <p>Domicile is one input among several — annual cost, dividend withholding and what your
-    platform offers all move the answer too. Our fund selector lets you weigh them together
-    rather than optimising for this one tax and discovering the bill somewhere else.</p>
-    <p><a href="https://phuazz.github.io/etf-starter-sg/" rel="noopener">Open the fund selector →</a></p>
-    <p class="mocknote"><b>Mock placeholder.</b> This currently points at an existing
-    third-party tool for demonstration. Before publication it must be replaced by our own
-    version — de-identified, and with the fund-level recommendations stripped out, since
-    naming a product as the answer is a line this site does not cross.</p>
+    <h3 style="margin-top:0">So what would it cost to hold this differently?</h3>
+    <p>Removing that <b class="num" id="hk-tax">—</b> exposure means holding the same companies
+    through a fund domiciled somewhere other than the United States. That changes more than this
+    one tax: annual cost, dividend withholding, which platforms carry it, and whether it can sit
+    in your SRS or CPF at all. Some of those move in your favour and some do not.</p>
+    <p>The point is not that one answer is right. It is that you can see the whole picture for
+    your own holdings instead of optimising for the scariest number on the page.</p>
+    <p><a href="https://phuazz.github.io/etf-starter-sg/" rel="noopener">Compare the trade-offs →</a></p>
+    <p class="mocknote"><b>Mock placeholder</b> — points at an existing tool for demonstration.
+    Before publication this must be our own version, de-identified and with fund-level
+    recommendations removed.</p>
   </div>
 
   <h2 id="mech">What changes your exposure</h2>
@@ -364,6 +366,7 @@ function update(){
   $('tax').textContent = 'S$'+fmt(taxSgd);
   $('keep').textContent = 'S$'+fmt(exposedSgd-taxSgd);
   $('d-us').textContent = 'S$'+fmt(taxSgd);
+  $('hk-tax').textContent = taxSgd>0 ? 'S$'+fmt(taxSgd) : 'estate-tax';
   $('tax-v').textContent = 'S$'+fmt(taxSgd);
   $('keep-v').textContent = 'S$'+fmt(exposedSgd-taxSgd);
 
