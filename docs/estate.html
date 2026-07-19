@@ -74,7 +74,12 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .out-l{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--on-deep)}
 .out-v{font-family:var(--serif);font-size:44px;line-height:1;letter-spacing:-1px}
 .out-v.sm{font-size:26px}
-.out-s{font-family:var(--mono);font-size:12px;color:var(--on-deep);width:100%}
+/* the plain-English line does the explaining, in sans so it reads as a
+   sentence; the USD detail is demoted to fine print because the reader
+   thinks in SGD and the dollar figures were competing with the answer */
+.out-s{font-size:14px;line-height:1.55;color:#e8e8e2;width:100%}
+.out-s b{font-family:var(--mono);font-weight:600;color:#fff}
+.out-fine{font-family:var(--mono);font-size:11px;color:#8a8a82;width:100%;margin-top:-4px}
 
 /* split bar: what reaches heirs vs what does not */
 .split{padding:16px 22px;background:var(--bg3);border-top:1px solid var(--bd)}
@@ -221,6 +226,7 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
         </div>
       </div>
       <div class="out-s" id="sub">—</div>
+      <div class="out-fine" id="fine">—</div>
     </div>
 
     <div class="split">
@@ -229,8 +235,8 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
         <div class="sp-tax" id="sp-tax"></div>
       </div>
       <div class="split-l">
-        <i><span class="dot" style="background:var(--brand)"></span>Reaches your family <b class="num" id="keep-v">—</b></i>
-        <i><span class="dot" style="background:var(--clay)"></span>Potential US estate tax <b class="num" id="tax-v">—</b></i>
+        <i><span class="dot" style="background:var(--brand)"></span>Reaches your family</i>
+        <i><span class="dot" style="background:var(--clay)"></span>Goes to the IRS</i>
       </div>
     </div>
   </div>
@@ -439,15 +445,20 @@ function update(){
   $('keep').textContent = 'S$'+fmt(exposedSgd-taxSgd);
   $('d-us').textContent = 'S$'+fmt(taxSgd);
   $('hk-tax').textContent = taxSgd>0 ? 'S$'+fmt(taxSgd) : 'estate-tax';
-  $('tax-v').textContent = 'S$'+fmt(taxSgd);
-  $('keep-v').textContent = 'S$'+fmt(exposedSgd-taxSgd);
-
   const effOnExposed = exposedSgd>0 ? taxUsd/exposedUsd*100 : 0;
-  $('sub').textContent = exposedSgd<=0
-    ? 'Nothing held in US-situated assets — nothing to compute.'
-    : (taxUsd<=0
-        ? 'Below the US$60,000 threshold (you hold US$'+fmt(exposedUsd)+') — the unified credit covers it entirely.'
-        : effOnExposed.toFixed(1)+'% of what you hold there · US$'+fmt(taxUsd)+' assessed on US$'+fmt(exposedUsd));
+  if (exposedSgd<=0){
+    $('sub').textContent = 'Nothing held in US-situated assets — nothing to compute.';
+    $('fine').textContent = '';
+  } else if (taxUsd<=0){
+    $('sub').innerHTML = 'You are under the US$60,000 threshold, so nothing is owed. The '
+      + 'US$13,000 credit covers a holding this size entirely.';
+    $('fine').textContent = 'You hold US$'+fmt(exposedUsd)+' of US-situated assets.';
+  } else {
+    // one plain sentence carrying all three figures in relation to each other
+    $('sub').innerHTML = 'That is <b>'+effOnExposed.toFixed(0)+'%</b> of the <b>S$'+fmt(exposedSgd)
+      + '</b> you hold in US shares — settled before your family receives anything.';
+    $('fine').textContent = 'Assessed in US dollars: US$'+fmt(taxUsd)+' on US$'+fmt(exposedUsd)+'.';
+  }
 
   // split bar — proportion of the EXPOSED holdings
   const taxPct = exposedSgd>0 ? Math.min(taxSgd/exposedSgd*100,100) : 0;
