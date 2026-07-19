@@ -88,10 +88,11 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 /* domicile comparison */
 /* the fact that reframes the whole question */
 .freeze{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;background:var(--r-bg);border:1px solid var(--r-bg2);border-radius:var(--radius-lg);padding:18px 20px;margin:22px 0}
-.freeze-n{font-family:var(--serif);font-size:40px;line-height:0.95;color:var(--r-text);white-space:nowrap;text-align:center}
+.freeze-n{font-family:var(--serif);font-size:34px;line-height:0.95;color:var(--r-text);white-space:nowrap;text-align:center}
 .freeze-n span{display:block;font-family:var(--sans);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
 .freeze h4{font-size:15px;font-weight:600;margin-bottom:5px}
-.freeze p{font-size:14px;color:var(--t2);line-height:1.6;margin:0}
+.freeze p{font-size:14px;color:var(--t2);line-height:1.6;margin:0 0 9px}
+.freeze p:last-child{margin-bottom:0}
 .freeze b{color:var(--t1);font-weight:600}
 
 .cmpgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
@@ -194,14 +195,19 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
   </div>
 
   <div class="freeze">
-    <div class="freeze-n">12–18<span>months</span></div>
+    <div class="freeze-n">§6324<span>the catch</span></div>
     <div>
-      <h4>And they may not be able to touch it meanwhile</h4>
-      <p>The plan most people have — my family will just sell it and move the money out — runs into a document called a
-      transfer certificate, which exists precisely to stop assets moving before the tax is settled. The IRS states its
-      processing time is <b>12 to 18 months from receiving all the documentation</b>. Selling later does not help either:
-      the tax is assessed on the value at the <b>date of death</b>, so it crystallised the day you died, whatever the
-      market did afterwards.</p>
+      <h4>"Can my family just sell it and move the money out?"</h4>
+      <p>Practically, often yes. An account with a password does not lock itself, and the IRS does not reach into your
+      brokerage. That is what most people quietly assume, and it is why this is worth understanding before you rely on it.</p>
+      <p>It does not make the bill disappear. The tax is assessed on the value at the <b>date of death</b>, so it
+      crystallised before anyone logged in. And under US law a person who receives assets passing outside probate — which
+      is what a brokerage account normally does — can be held <b>personally liable</b> for the unpaid estate tax, up to
+      the value of what they received. Where such an asset is liquidated without the tax being paid, that liability falls
+      on the recipient, and a lien can attach to their own property.</p>
+      <p>So the plan does not remove the problem. It moves it onto your family, personally, in a foreign jurisdiction,
+      at the worst imaginable moment. Separately, once a broker is notified of a death it will generally want a
+      <b>transfer certificate</b> before releasing anything — and the IRS states that takes <b>12 to 18 months</b>.</p>
     </div>
   </div>
 
@@ -288,9 +294,13 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
     filing deadline and the quoted situs rule: <a href="https://www.irs.gov/instructions/i706na">IRS, Instructions for Form 706-NA</a>.
     Rate schedule (Table A, 18% rising to a 40% top marginal rate): <a href="https://www.irs.gov/instructions/i706">IRS, Instructions for Form 706</a>.
     Treaty position: Singapore does not appear on the <a href="https://www.irs.gov/businesses/small-businesses-self-employed/estate-gift-tax-treaties-international">IRS list of estate and gift tax treaty countries</a>, so no treaty relief is available.<br><br>
-    <b>Still unverified, and therefore not modelled:</b> the treatment of jointly held
-    accounts, and whether a transfer certificate is required before a broker releases
-    assets. Both are deliberately absent rather than guessed at.
+    Transfer certificate and its 12-to-18-month processing time: <a href="https://www.irs.gov/businesses/small-businesses-self-employed/transfer-certificate-filing-requirements-for-the-estates-of-nonresidents-not-citizens-of-the-united-states">IRS, Transfer certificate filing requirements</a>.
+    Personal liability of a recipient of non-probate assets under IRC §6324(a)(2), and the lien that can attach to their own property: <a href="https://www.irs.gov/irm/part5/irm_05-017-014">IRM 5.17.14</a> and <a href="https://www.irs.gov/irm/part8/irm_08-007-005">IRM 8.7.5</a>.<br><br>
+    <b>Deliberately not claimed:</b> we do not assert that a broker will or will not release
+    assets without a transfer certificate — the IRS pages do not address a custodian's
+    obligations, and an earlier version of this page implied a certainty the sources do not
+    support. The treatment of <b>jointly held accounts</b>, and the duration of the §6324(a)
+    lien, are likewise unverified and therefore not modelled.
   </div>
 
   <footer>
