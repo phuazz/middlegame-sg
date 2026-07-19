@@ -186,9 +186,17 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
       <div class="f">
         <div class="f-top">
           <label for="us">How much do you hold in US shares and US-domiciled funds?</label>
-          <div class="f-val"><span class="pre">S$</span><input type="text" id="us" value="900,000" inputmode="numeric"></div>
+          <div class="f-val"><span class="pre">S$</span><input type="text" id="us" value="250,000" inputmode="numeric"></div>
         </div>
-        <input type="range" id="us-r" min="0" max="5000000" step="25000" value="900000" aria-label="US-situated holdings">
+        <!-- Default S$250,000: a plausible US holding for the mid-career reader this is
+             written for, NOT a maximal one. The pre-computed state is what most readers
+             see and never change, so it frames the whole argument — and the standfirst's
+             claim is that this catches ordinary holdings, so the default has to be one.
+             It yields ~S$51,000 of tax: unmistakably material, without being a
+             rich-person illustration that contradicts the copy above it.
+             Slider tops out at S$2,000,000 so the common range has real resolution;
+             larger holders can type a figure. -->
+        <input type="range" id="us-r" min="0" max="2000000" step="10000" value="250000" aria-label="US-situated holdings">
         <div class="f-hint">The one number that matters — read it straight off your statement. Only US-incorporated companies and US-domiciled funds count. Not sure which yours are? <a href="#mech">How to tell →</a></div>
       </div>
 
@@ -255,10 +263,11 @@ footer{padding:28px 0 60px;font-size:12px;color:var(--t3-text);line-height:1.65}
     <div class="freeze-n">Yes<span>and that is the trap</span></div>
     <div>
       <h4>"Then can my family just sell it and move the money out?"</h4>
-      <p class="story">Picture a father who bought Nvidia shares years ago, long before anyone at his table had heard
-      of the name, and simply held on. The holding is worth around S$900,000 today. It sits in a brokerage account and
-      his face unlocks it. One night he dies in his sleep, peacefully, at home. The family knows about the shares. The
-      login still works. Nothing appears to be wrong at all — until they try to put those shares in their own names.</p>
+      <p class="story">Picture a father who put a modest sum into Nvidia years ago, long before anyone at his table had
+      heard of the name, and simply held on. He was never wealthy. The holding is worth around S$250,000 today. It sits
+      in a brokerage account and his face unlocks it. One night he dies in his sleep, peacefully, at home. The family
+      knows about the shares. The login still works. Nothing appears to be wrong at all — until they try to put those
+      shares in their own names.</p>
       <p>Practically, they can often sell. An account does not lock itself, and the IRS does not reach into your
       brokerage. That is what most people quietly assume, and it is why this is worth understanding before you rely on it.</p>
       <p>It does not make the bill disappear. The tax is assessed on the value at the <b>date of death</b>, so it
